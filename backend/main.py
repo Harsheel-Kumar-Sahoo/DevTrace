@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 import routes_events
 import routes_read
 import routes_compare
+import routes_stream
 
 app = FastAPI(title="DevTrace API")
 
@@ -25,7 +26,7 @@ def health():
 app.include_router(routes_events.router)
 app.include_router(routes_read.router)
 app.include_router(routes_compare.router)
-# A5 router gets added HERE, above the static mount below.
+app.include_router(routes_stream.router)
 
 # Serve ../frontend at "/". Must stay LAST, otherwise it swallows other routes.
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
