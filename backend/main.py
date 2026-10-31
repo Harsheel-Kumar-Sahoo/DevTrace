@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import routes_events
+import routes_read
 
 app = FastAPI(title="DevTrace API")
 
@@ -14,8 +15,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+
 app.include_router(routes_events.router)
-# A3 routers get added HERE, above the static mount below.
+app.include_router(routes_read.router)
+# A4 and A5 routers get added HERE, above the static mount below.
 
 # Serve ../frontend at "/". Must stay LAST, otherwise it swallows other routes.
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
